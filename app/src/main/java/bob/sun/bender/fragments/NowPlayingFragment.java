@@ -1,6 +1,5 @@
 package bob.sun.bender.fragments;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import bob.sun.bender.controller.OnTickListener;
 import bob.sun.bender.model.MediaLibrary;
 import bob.sun.bender.model.SelectionDetail;
 import bob.sun.bender.model.SongBean;
-import bob.sun.bender.service.PlayerService;
 import bob.sun.bender.theme.Theme;
 import bob.sun.bender.theme.ThemeManager;
 import bob.sun.bender.utils.AIDLDumper;
@@ -59,23 +57,20 @@ public class NowPlayingFragment extends Fragment implements OnTickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater layoutInflater,
-                             ViewGroup parent,
-                             Bundle savedInstanceState
-                             ){
-        View ret = layoutInflater.inflate(R.layout.layout_now_playing,parent,false);
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle savedInstanceState) {
+        View ret = layoutInflater.inflate(R.layout.layout_now_playing, parent, false);
         view = ret;
         contentView = view.findViewById(R.id.id_now_playing_wrapper);
         seekView = view.findViewById(R.id.id_seeker_wrapper);
-        progressView = (NumberProgressBar) view.findViewById(R.id.id_progress_view);
-        seeker = (NumberProgressBar) view.findViewById(R.id.id_seeker);
-        seekerTitle = (TextView) view.findViewById(R.id.id_seeker_title);
-        seekerHint = (TextView) view.findViewById(R.id.id_seeker_hint);
-        currentTime = (TextView) view.findViewById(R.id.current_time);
-        totalTime = (TextView) view.findViewById(R.id.total_time);
-        title = (TextView) view.findViewById(R.id.id_now_playing_text_view_title);
-        album = (TextView) view.findViewById(R.id.id_now_playing_text_view_album);
-        artist = (TextView) view.findViewById(R.id.id_now_playing_text_view_artist);
+        progressView = view.findViewById(R.id.id_progress_view);
+        seeker = view.findViewById(R.id.id_seeker);
+        seekerTitle = view.findViewById(R.id.id_seeker_title);
+        seekerHint = view.findViewById(R.id.id_seeker_hint);
+        currentTime = view.findViewById(R.id.current_time);
+        totalTime = view.findViewById(R.id.total_time);
+        title = view.findViewById(R.id.id_now_playing_text_view_title);
+        album = view.findViewById(R.id.id_now_playing_text_view_album);
+        artist = view.findViewById(R.id.id_now_playing_text_view_artist);
         volume = VolumeUtil.getStaticInstance(getActivity());
 
         loadTheme();
@@ -117,7 +112,7 @@ public class NowPlayingFragment extends Fragment implements OnTickListener {
         super.onPause();
     }
 
-    public void setSong(SongBean songBean){
+    public void setSong(SongBean songBean) {
         if (progressFetcher != null)
             view.removeCallbacks(progressFetcher);
 
@@ -234,15 +229,15 @@ public class NowPlayingFragment extends Fragment implements OnTickListener {
     public void onProcessChanged(final int current, final int total) {
         if (total == -1)
             return;
-        if (progressView != null )
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                progressView.setProgress((int) (((float)current / (float)total) * 100));
-                currentTime.setText(String.format("%02d:%02d", (current / 1000 / 60), (current / 1000 % 60)));
-                totalTime.setText(String.format("%02d:%02d", (total / 1000 / 60), (total / 1000 % 60)));
-            }
-        });
+        if (progressView != null)
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressView.setProgress((int) (((float) current / (float) total) * 100));
+                    currentTime.setText(String.format("%02d:%02d", (current / 1000 / 60), (current / 1000 % 60)));
+                    totalTime.setText(String.format("%02d:%02d", (total / 1000 / 60), (total / 1000 % 60)));
+                }
+            });
 
     }
 
